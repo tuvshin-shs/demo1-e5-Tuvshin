@@ -252,7 +252,6 @@
             color: #ffffff;
             letter-spacing: -0.03em;
             margin-right: -0.03em;
-            transform: translateX(-20px);
             line-height: 0.8;
             margin-top: 0;
             margin-bottom: 0;
@@ -270,6 +269,9 @@
             overflow: hidden;
             vertical-align: bottom;
             line-height: 0.8;
+            /* запас, чтобы маска не обрезала края букв (w, m, d) */
+            padding: 0.1em 0.04em;
+            margin: -0.1em -0.04em;
         }
         .footer-logo-text .letter-inner {
             display: inline-block;
@@ -412,7 +414,7 @@
     </footer>
 
     <div class="footer-logo-wrap">
-        <h2 class="footer-logo-text">Loopstack</h2>
+        <h2 class="footer-logo-text">Newnomads</h2>
     </div>
 
     <div class="video-container">
@@ -452,6 +454,27 @@
                     wrapper.appendChild(inner);
                     logoText.appendChild(wrapper);
                 });
+
+                // Уменьшаем шрифт, если слово не помещается по ширине экрана целиком
+                const logoWrap = document.querySelector('.footer-logo-wrap');
+                const fitLogo = () => {
+                    const letters = logoText.querySelectorAll('.letter-wrapper');
+                    if (!logoWrap || !letters.length) return;
+
+                    logoText.style.fontSize = '';
+                    const wrapStyles = getComputedStyle(logoWrap);
+                    const available = logoWrap.clientWidth - parseFloat(wrapStyles.paddingLeft) - parseFloat(wrapStyles.paddingRight);
+                    const textWidth = letters[letters.length - 1].getBoundingClientRect().right - letters[0].getBoundingClientRect().left;
+
+                    if (textWidth > available) {
+                        const fontSize = parseFloat(getComputedStyle(logoText).fontSize);
+                        logoText.style.fontSize = `${fontSize * available / textWidth}px`;
+                    }
+                };
+
+                fitLogo();
+                document.fonts.ready.then(fitLogo);
+                window.addEventListener('resize', fitLogo);
             }
 
             // Разделение верхнего заголовка на слова для анимации появления снизу вверх из маски с блюром
