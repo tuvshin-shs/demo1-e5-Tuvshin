@@ -287,21 +287,46 @@
         }
 
         /* ===== Background image ===== */
-        .video-container {
+        .image-container {
             position: fixed;
             bottom: 0;
-            left: 0;
-            width: 100vw;
+            left: 1cm;
+            right: 1cm;
+            width: calc(100vw - 2cm);   /* 1cm зай зүүн, баруун талаас */
             height: 90vh;
             overflow: hidden;
             z-index: -1;
         }
         #bg-image {
             width: 100%;
-            height: 110%;
+            height: 100%;
             object-fit: cover;
             display: block;
-            transform: translateY(0%);
+        }
+        /* харанхуй давхарга: цагаан текстийг цайвар зураг дээр тодруулна */
+        .image-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.45) 45%,
+                rgba(0, 0, 0, 0.6) 100%);
+            pointer-events: none;
+        }
+        .image-credit {
+            position: fixed;
+            right: 1cm;
+            bottom: 4px;
+            z-index: 3;
+            font-family: 'Outfit', 'Onest', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.02em;
+            color: rgba(255, 255, 255, 0.45);
+            text-decoration: none;
+        }
+        .image-credit:hover {
+            color: #ffffff;
         }
 
         /* ===== Custom cursor ===== */
@@ -417,9 +442,10 @@
         <h2 class="footer-logo-text">Newnomads</h2>
     </div>
 
-    <div class="video-container">
-        <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=2400&q=80&auto=format&fit=crop" alt="Усны долгион" id="bg-image">
+    <div class="image-container">
+        <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Uureg_Lake_landscape_and_mountains_2022.jpg/1920px-Uureg_Lake_landscape_and_mountains_2022.jpg" alt="Үүрэг нуур, уулс — Увс аймаг" id="bg-image">
     </div>
+    <a class="image-credit" href="https://commons.wikimedia.org/wiki/File:Uureg_Lake_landscape_and_mountains_2022.jpg" target="_blank" rel="noopener">Зураг: BatboldDorjgurkhem, CC BY 4.0</a>
 
     <div id="cursor-ring" class="cursor-ring-outline"></div>
 
